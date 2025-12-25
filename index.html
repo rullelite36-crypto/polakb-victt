@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prediksi K/B - POLA VICT</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;
+  min-height:100%;
+  background:#000;
+  font-family:Arial,sans-serif;
+}
+
+/* BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  width:200%;
+  height:200%;
+  background:
+    repeating-linear-gradient(0deg,rgba(120,80,255,.12),rgba(120,80,255,.12) 1px,transparent 1px,transparent 18px),
+    repeating-linear-gradient(90deg,rgba(80,160,255,.12),rgba(80,160,255,.12) 1px,transparent 1px,transparent 18px);
+  animation:grid 20s linear infinite;
+  z-index:0;
+}
+@keyframes grid{to{transform:translate(-50px,-50px)}}
+
+/* LOGIN */
+#loginScreen{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+.loginBox{
+  background:rgba(0,0,0,.88);
+  padding:28px;
+  border-radius:22px;
+  border:4px solid;
+  animation:border 4s linear infinite;
+  box-shadow:0 0 30px #6a5cff,0 0 50px #4da6ff;
+  width:92%;
+  max-width:360px;
+  text-align:center;
+}
+.loginBox h2{
+  color:#9ab0ff;
+  margin-bottom:18px;
+  font-size:22px;
+}
+.loginBox input{
+  width:100%;
+  padding:14px;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  margin-bottom:16px;
+}
+.loginBox button{
+  width:100%;
+  padding:14px;
+  font-size:19px;
+  font-weight:bold;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(90deg,#6a5cff,#4da6ff);
+}
+.loginError{color:#ff4d6d;font-size:14px}
+
+/* MAIN */
+.wrapper{
+  position:relative;
+  z-index:1;
+  display:none;
+  min-height:100vh;
+  padding:16px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.main{
+  width:100%;
+  max-width:520px;
+  text-align:center;
+}
+
+h1{
+  font-size:30px;
+  margin-bottom:18px;
+  color:#9ab0ff;
+  text-shadow:0 0 12px #6a5cff,0 0 24px #4da6ff;
+}
+
+.container{
+  background:rgba(0,0,0,.78);
+  padding:24px;
+  border-radius:22px;
+  border:4px solid;
+  animation:border 4s linear infinite;
+  box-shadow:0 0 30px rgba(120,120,255,.9);
+  width:100%;
+}
+
+label{
+  color:#fff;
+  display:block;
+  margin-top:12px;
+  text-align:left;
+  font-size:16px;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  margin-top:6px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  margin-top:20px;
+  padding:16px;
+  font-size:20px;
+  font-weight:bold;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(90deg,#6a5cff,#4da6ff);
+  box-shadow:0 0 22px #6a5cff,0 0 36px #4da6ff;
+}
+
+.result{
+  margin-top:20px;
+  font-size:20px;
+  font-weight:bold;
+  color:#9ab0ff;
+  text-shadow:0 0 6px #4da6ff;
+}
+
+/* TELEGRAM */
+.help{
+  margin-top:16px;
+}
+.tg-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
+  padding:14px;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:bold;
+  color:#fff;
+  background:#229ED9;
+  cursor:pointer;
+  box-shadow:0 0 18px rgba(34,158,217,.8);
+}
+.tg-btn img{
+  width:22px;
+  height:22px;
+}
+
+@keyframes border{
+  0%{border-color:#6a5cff}
+  50%{border-color:#4da6ff}
+  100%{border-color:#6a5cff}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="loginBox">
+    <h2>🔐 LOGIN POLA VICT</h2>
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button onclick="login()">MASUK</button>
+    <div class="loginError" id="loginError"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="wrapper" id="mainApp">
+  <div class="main">
+    <h1>🎲 PREDIKSI KECIL / BESAR<br>POLA VICT</h1>
+
+    <div class="container">
+      <label>Angka M1</label>
+      <input type="number" id="m1">
+
+      <label>Angka M2</label>
+      <input type="number" id="m2">
+
+      <label>Tipe Device</label>
+      <select id="device">
+        <option value="iphone">iPhone</option>
+        <option value="android-chrome">Android Chrome</option>
+        <option value="android-google">Android Google</option>
+      </select>
+
+      <label>Menit (0–59)</label>
+      <input type="number" id="menit">
+
+      <button onclick="prediksi()">🔮 PREDIKSI SEKARANG</button>
+
+      <div class="result" id="hasilPrediksi">Hasil akan muncul di sini</div>
+
+      <div class="help" id="helpBox" style="display:none">
+        There is a problem? chat
+        <div class="tg-btn" onclick="openTelegram()">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
+          @top2ban
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD="RULZPRED12";
+
+function login(){
+  const input=document.getElementById("passwordInput").value.trim();
+  const error=document.getElementById("loginError");
+  if(input===PASSWORD){
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("mainApp").style.display="flex";
+  }else{
+    error.innerText="❌ PASSWORD SALAH";
+  }
+}
+
+function openTelegram(){
+  window.location.href="tg://resolve?domain=top2ban";
+}
+
+function prediksi(){
+  const m1=parseInt(document.getElementById("m1").value);
+  const m2=parseInt(document.getElementById("m2").value);
+  const menit=parseInt(document.getElementById("menit").value);
+  const device=document.getElementById("device").value;
+  const hasil=document.getElementById("hasilPrediksi");
+  const help=document.getElementById("helpBox");
+
+  if(isNaN(m1)||isNaN(m2)||isNaN(menit)){
+    hasil.innerText="⚠️ Lengkapi data dulu";
+    help.style.display="none";
+    return;
+  }
+
+  function polaMenit(dev,m){
+    if(dev==="iphone") return (m<=11||(m>=17&&m<=27)||(m>=40&&m<=46)||(m>=54||m===0))?"B":"K";
+    if(dev==="android-chrome") return (m<=10||(m>=19&&m<=28)||(m>=37&&m<=42)||(m>=48&&m<=52))?"B":"K";
+    if(dev==="android-google") return ((m>=10&&m<=16)||(m>=27&&m<=32)||(m>=38&&m<=45)||(m>=51&&m<=56))?"B":"K";
+  }
+
+  const naik=m2>m1?"B":"K";
+  const menitPred=polaMenit(device,menit);
+
+  hasil.innerHTML=`🎯 Pola Menit: <b>${menitPred}</b><br>🔄 Naik/Turun: <b>${naik}</b>`;
+  help.style.display="block";
+}
+</script>
+
+</body>
+</html>
